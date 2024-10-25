@@ -1,0 +1,11 @@
+{
+  "name": "mendezmendez",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/yungwkndllc/mendezmendez.git",
+  "author": "yungwknd <yungwkndllc@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}
