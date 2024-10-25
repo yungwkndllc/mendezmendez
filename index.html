@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layered Images</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            overflow: hidden;
+        }
+        .image-container {
+            position: relative;
+            width: 80vw;
+            height: 80vh;
+        }
+        .image-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease-in-out;
+        }
+        .image-layer:hover {
+            transform: scale(1.05);
+            z-index: 10 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container" id="imageContainer"></div>
+
+    <script>
+        const background = '00_bg/bg.png';
+        const voidImage = '07_void/void.png';
+        const garden = '06_garden/garden.png';
+
+        const images1 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
+        const images2 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
+        const images3 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
+        const images4 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
+        const images5 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
+
+        const container = document.getElementById('imageContainer');
+
+        // Function to get a random image from an array
+        const getRandomImage = (array) => array[Math.floor(Math.random() * array.length)];
+
+        // Create an array with all the images we want to display
+        const imagesToDisplay = [
+            { src: background, alt: 'Background' },
+            { src: voidImage, alt: 'Void' },
+            { src: garden, alt: 'Garden' },
+            { src: '01_' + getRandomImage(images1), alt: 'Image 1' },
+            { src: '02_' + getRandomImage(images2), alt: 'Image 2' },
+            { src: '03_' + getRandomImage(images3), alt: 'Image 3' },
+            { src: '04_' + getRandomImage(images4), alt: 'Image 4' },
+            { src: '05_' + getRandomImage(images5), alt: 'Image 5' }
+        ];
+
+        imagesToDisplay.forEach((img, index) => {
+            const imgElement = document.createElement('img');
+            imgElement.src = img.src;
+            imgElement.alt = img.alt;
+            imgElement.className = 'image-layer';
+            imgElement.style.zIndex = imagesToDisplay.length - index;
+            
+            // Apply scaling and translation based on index
+            if (index > 0) {
+                const scale = 1 - (index * 0.05);
+                const translateX = index % 2 === 0 ? 2 : -2;
+                const translateY = index % 2 === 0 ? 2 : -2;
+                imgElement.style.transform = `scale(${scale}) translateX(${translateX}%) translateY(${translateY}%)`;
+            }
+
+            container.appendChild(imgElement);
+        });
+    </script>
+</body>
+</html>
