@@ -34,14 +34,51 @@
 
     <script>
         const background = '00_bg/bg.png';
-        const voidImage = '07_void/void.png';
-        const garden = '06_garden/garden.png';
+        const garden = '01_garden/garden.png';
 
         const images1 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
         const images2 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
         const images3 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
         const images4 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
         const images5 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
+        
+        const timeImages = [
+            '01_normal.png',
+            '02_normal.png',
+            '03_normal.png',
+            '04_normal.png',
+            '05_normal.png',
+            '06_normal.png',
+            '07_multiply.png',
+            '08_multiply.png',
+            '09_multiply.png',
+            '10_overlay.png',
+            '11_overlay.png',
+            '12_overlay.png',
+            '13_overlay.png',
+            '14_overlay.png',
+            '15_overlay.png',
+            '16_overlay.png',
+            '17_overlay.png',
+            '18_normal.png',
+            '19_normal.png',
+            '20_normal.png',
+            '21_normal.png',
+            '22_normal.png',
+            '23_normal.png',
+            '24_normal.png',
+        ]
+
+        const voidImages = [
+            '_0000s_0000_stars-7.png',
+            '_0000s_0001_stars-6.png',
+            '_0000s_0002_stars-5.png',
+            '_0000s_0003_stars-4.png',
+            '_0000s_0004_stars-3.png',
+            '_0000s_0005_stars-2.png',
+            '_0000s_0006_stars-1.png',
+        ]
+
 
         const container = document.getElementById('imageContainer');
 
@@ -51,13 +88,16 @@
         // Create an array with all the images we want to display
         const imagesToDisplay = [
             { src: background, alt: 'Background', zIndex: 0 },
-            { src: voidImage, alt: 'Void', zIndex: 100 },
             { src: garden, alt: 'Garden', zIndex: 2 },
-            { src: '01_flowers1/' + getRandomImage(images1), alt: 'Image 1', zIndex: 3 },
-            { src: '02_flowers2/' + getRandomImage(images2), alt: 'Image 2', zIndex: 4 },
-            { src: '03_flowers3/' + getRandomImage(images3), alt: 'Image 3', zIndex: 5 },
-            { src: '04_flowers4/' + getRandomImage(images4), alt: 'Image 4', zIndex: 6 },
-            { src: '05_flowers5/' + getRandomImage(images5), alt: 'Image 5', zIndex: 7 }
+            { src: '02_flowers1/' + getRandomImage(images1), alt: 'Image 1', zIndex: 3 },
+            { src: '03_flowers2/' + getRandomImage(images2), alt: 'Image 2', zIndex: 4 },
+            { src: '04_flowers3/' + getRandomImage(images3), alt: 'Image 3', zIndex: 5 },
+            { src: '05_flowers4/' + getRandomImage(images4), alt: 'Image 4', zIndex: 6 },
+            { src: '06_flowers5/' + getRandomImage(images5), alt: 'Image 5', zIndex: 7 },
+            { src: '07_Time/' + getRandomImage(timeImages), alt: 'Time', zIndex: 8 },
+            { src: '08_Void/' + getRandomImage(voidImages), alt: 'Void', zIndex: 9 },
+            { src: '09_Skull/skull.png', alt: 'Skull', zIndex: 10 },
+            { src: '10_Texture/texture.png', alt: 'Texture', zIndex: 11 },
         ];
 
         imagesToDisplay.forEach((img, index) => {

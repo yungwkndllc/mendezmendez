@@ -21,32 +21,58 @@ function getAllFiles(dirPath, arrayOfFiles) {
 }
 
 // Get all files recursively
-const allFiles = getAllFiles(path.join(__dirname, ".."));
+let allFiles = getAllFiles(path.join(__dirname, ".."));
 
 // Filter for .png files
-const pngFiles = allFiles.filter(
+let pngFiles = allFiles.filter(
   (file) => path.extname(file).toLowerCase() === ".png"
 );
 
 console.log("Found", pngFiles.length, "png files");
 
-// Process each .png file
-pngFiles.forEach(async (file) => {
-  const inputPath = file;
-  const outputPath = path.join(
-    path.dirname(file),
-    path.basename(file).replace("resized_", "")
-  );
+const resize = () => {
+  // Process each .png file
+  pngFiles.forEach(async (file) => {
+    const inputPath = file;
+    const outputPath = path.join(
+      path.dirname(file),
+      "_resized_" + path.basename(file)
+    );
 
-  fs.renameSync(inputPath, outputPath);
+    try {
+      const metadata = await sharp(inputPath).metadata();
+      const newWidth = Math.round(0.25 * metadata.width);
 
-  //   try {
-  //     const metadata = await sharp(inputPath).metadata();
-  //     const newWidth = Math.round(0.25 * metadata.width);
+      // Resize image to 25%
+      await sharp(inputPath).resize({ width: newWidth }).toFile(outputPath);
+    } catch (err) {
+      console.error("Error processing image:", err);
+    }
+  });
+};
 
-  //     // Resize image to 25%
-  //     await sharp(inputPath).resize({ width: newWidth }).toFile(outputPath);
-  //   } catch (err) {
-  //     console.error("Error processing image:", err);
-  //   }
-});
+const clean = () => {
+  pngFiles.forEach(async (file) => {
+    const inputPath = file;
+
+    if (!file.includes("_resized_")) {
+      fs.unlinkSync(inputPath);
+    }
+  });
+};
+
+const rename = () => {
+  pngFiles.forEach(async (file) => {
+    const inputPath = file;
+    const outputPath = path.join(
+      path.dirname(file),
+      path.basename(file).replace("_resized_", "")
+    );
+
+    fs.renameSync(inputPath, outputPath);
+  });
+};
+
+// resize();
+// clean();
+rename();
