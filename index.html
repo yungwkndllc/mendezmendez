@@ -87,7 +87,7 @@
         const getRandomImage = (array) => array[Math.floor(Math.random() * array.length)];
 
         const getTimeImage = () => {
-            const currentHour = new Date().getHours();
+            const currentHour = new Date().getHours() - 1;
             return timeImages[currentHour];
         };
 
