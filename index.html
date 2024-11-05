@@ -169,11 +169,11 @@
                 if (hour === 0 || hour === 24) return '12am';
                 return (hour > 12 ? (hour - 12) + 'pm' : hour + 'am');
             })(),
-            'Void': 'Stars',
+            'Void': voidImage.split('-')[1].split('.')[0],
         }
 
         if (hasOG && ogImage !== 'None.png') {
-            traits['OG'] = 'Yes';
+            traits['OG'] = ogImage.split('.')[0];
         }
 
         hl.token.setTraits(traits);
