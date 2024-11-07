@@ -124,70 +124,76 @@
             }
         };
 
-        const flower1Image = getRandomImage(images1);
-        const flower2Image = getRandomImage(images2);
-        const flower3Image = getRandomImage(images3);
-        const flower4Image = getRandomImage(images4);
-        const flower5Image = getRandomImage(images5);
-        const timeImage = getTimeImage();
-        const voidImage = getRandomImage(voidImages);
+        const createArt = () => {
+            const flower1Image = getRandomImage(images1);
+            const flower2Image = getRandomImage(images2);
+            const flower3Image = getRandomImage(images3);
+            const flower4Image = getRandomImage(images4);
+            const flower5Image = getRandomImage(images5);
+            const timeImage = getTimeImage();
+            const voidImage = getRandomImage(voidImages);
 
-        // Create an array with all the images we want to display
-        const imagesToDisplay = [
-            { src: background, alt: 'Background', zIndex: 0, blendMode: 'normal' },
-            { src: garden, alt: 'Garden', zIndex: 2, blendMode: 'normal' },
-            { src: '02_flowers1/' + flower1Image, alt: 'Image 1', zIndex: 3, blendMode: 'normal' },
-            { src: '03_flowers2/' + flower2Image, alt: 'Image 2', zIndex: 4, blendMode: 'normal' },
-            { src: '04_flowers3/' + flower3Image, alt: 'Image 3', zIndex: 5, blendMode: 'normal' },
-            { src: '05_flowers4/' + flower4Image, alt: 'Image 4', zIndex: 6, blendMode: 'normal' },
-            { src: '06_flowers5/' + flower5Image, alt: 'Image 5', zIndex: 7, blendMode: 'normal' },
-            { src: '07_Time/' + timeImage, alt: 'Time', zIndex: 8, blendMode: getTimeBlendMode() },
-            { src: '08_Void/' + voidImage, alt: 'Void', zIndex: 9, blendMode: 'normal' },
-            { src: '09_Skull/skull.png', alt: 'Skull', zIndex: 10, blendMode: 'normal' },
-            { src: '10_Texture/texture.png', alt: 'Texture', zIndex: 11, blendMode: 'screen' },
-        ];
+            // Create an array with all the images we want to display
+            const imagesToDisplay = [
+                { src: background, alt: 'Background', zIndex: 0, blendMode: 'normal' },
+                { src: garden, alt: 'Garden', zIndex: 2, blendMode: 'normal' },
+                { src: '02_flowers1/' + flower1Image, alt: 'Image 1', zIndex: 3, blendMode: 'normal' },
+                { src: '03_flowers2/' + flower2Image, alt: 'Image 2', zIndex: 4, blendMode: 'normal' },
+                { src: '04_flowers3/' + flower3Image, alt: 'Image 3', zIndex: 5, blendMode: 'normal' },
+                { src: '05_flowers4/' + flower4Image, alt: 'Image 4', zIndex: 6, blendMode: 'normal' },
+                { src: '06_flowers5/' + flower5Image, alt: 'Image 5', zIndex: 7, blendMode: 'normal' },
+                { src: '07_Time/' + timeImage, alt: 'Time', zIndex: 8, blendMode: getTimeBlendMode() },
+                { src: '08_Void/' + voidImage, alt: 'Void', zIndex: 9, blendMode: 'normal' },
+                { src: '09_Skull/skull.png', alt: 'Skull', zIndex: 10, blendMode: 'normal' },
+                { src: '10_Texture/texture.png', alt: 'Texture', zIndex: 11, blendMode: 'screen' },
+            ];
 
-        let hasOG = false;
-        let ogImage = null;
+            let hasOG = false;
+            let ogImage = null;
 
-        // If it's after 7pm and before 8am, add the OG glow image
-        if (new Date().getHours() >= 19 || new Date().getHours() < 8) {
-            hasOG = true;
-            ogImage = getOGImage();
-            imagesToDisplay.push({ src: '11_OG_Glow/' + ogImage, alt: 'Text', zIndex: 12, blendMode: 'normal' });
+            // If it's after 7pm and before 8am, add the OG glow image
+            if (new Date().getHours() >= 19 || new Date().getHours() < 8) {
+                hasOG = true;
+                ogImage = getOGImage();
+                imagesToDisplay.push({ src: '11_OG_Glow/' + ogImage, alt: 'Text', zIndex: 12, blendMode: 'normal' });
+            }
+
+            let traits = {
+                'Flower 1': flower1Image.split('.')[0].charAt(0).toUpperCase() + flower1Image.split('.')[0].slice(1),
+                'Flower 2': flower2Image.split('.')[0].charAt(0).toUpperCase() + flower2Image.split('.')[0].slice(1),
+                'Flower 3': flower3Image.split('.')[0].charAt(0).toUpperCase() + flower3Image.split('.')[0].slice(1),
+                'Flower 4': flower4Image.split('.')[0].charAt(0).toUpperCase() + flower4Image.split('.')[0].slice(1),
+                'Flower 5': flower5Image.split('.')[0].charAt(0).toUpperCase() + flower5Image.split('.')[0].slice(1),
+                'Time': (() => {
+                    const hour = parseInt(timeImage.split('_')[0]);
+                    if (hour === 12) return '12pm';
+                    if (hour === 0 || hour === 24) return '12am';
+                    return (hour > 12 ? (hour - 12) + 'pm' : hour + 'am');
+                })(),
+                'Void': voidImage.split('-')[1].split('.')[0],
+            }
+
+            if (hasOG && ogImage !== 'None.png') {
+                traits['OG'] = ogImage.split('.')[0];
+            }
+
+            hl.token.setTraits(traits);
+
+            imagesToDisplay.forEach((img, index) => {
+                const imgElement = document.createElement('img');
+                imgElement.src = img.src;
+                imgElement.alt = img.alt;
+                imgElement.className = 'image-layer';
+                imgElement.style.zIndex = img.zIndex;
+                imgElement.style.mixBlendMode = img.blendMode;
+                
+                container.appendChild(imgElement);
+            });
         }
 
-        let traits = {
-            'Flower 1': flower1Image.split('.')[0].charAt(0).toUpperCase() + flower1Image.split('.')[0].slice(1),
-            'Flower 2': flower2Image.split('.')[0].charAt(0).toUpperCase() + flower2Image.split('.')[0].slice(1),
-            'Flower 3': flower3Image.split('.')[0].charAt(0).toUpperCase() + flower3Image.split('.')[0].slice(1),
-            'Flower 4': flower4Image.split('.')[0].charAt(0).toUpperCase() + flower4Image.split('.')[0].slice(1),
-            'Flower 5': flower5Image.split('.')[0].charAt(0).toUpperCase() + flower5Image.split('.')[0].slice(1),
-            'Time': (() => {
-                const hour = parseInt(timeImage.split('_')[0]);
-                if (hour === 12) return '12pm';
-                if (hour === 0 || hour === 24) return '12am';
-                return (hour > 12 ? (hour - 12) + 'pm' : hour + 'am');
-            })(),
-            'Void': voidImage.split('-')[1].split('.')[0],
-        }
+        createArt();
 
-        if (hasOG && ogImage !== 'None.png') {
-            traits['OG'] = ogImage.split('.')[0];
-        }
-
-        hl.token.setTraits(traits);
-
-        imagesToDisplay.forEach((img, index) => {
-            const imgElement = document.createElement('img');
-            imgElement.src = img.src;
-            imgElement.alt = img.alt;
-            imgElement.className = 'image-layer';
-            imgElement.style.zIndex = img.zIndex;
-            imgElement.style.mixBlendMode = img.blendMode;
-            
-            container.appendChild(imgElement);
-        });
+        setInterval(createArt, 1000*60);
     </script>
 </body>
 </html>
