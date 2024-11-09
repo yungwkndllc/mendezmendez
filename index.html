@@ -47,6 +47,7 @@
         const images5 = ['circulation.png', 'orange.png', 'pink.png', 'red.png', 'sky.png', 'white.png', 'yellow.png'];
         
         const timeImages = [
+            '00_normal.png',
             '01_normal.png',
             '02_normal.png',
             '03_normal.png',
@@ -70,7 +71,6 @@
             '21_normal.png',
             '22_normal.png',
             '23_normal.png',
-            '24_normal.png',
         ]
 
         const voidImages = [
@@ -90,12 +90,12 @@
         const getRandomImage = (array) => array[Math.floor(hl.random() * array.length)];
 
         const getTimeImage = () => {
-            const currentHour = new Date().getHours() - 1;
+            const currentHour = new Date().getHours();
             return timeImages[currentHour];
         };
 
         const getTimeBlendMode = () => {
-            const currentHour = new Date().getHours() - 1;
+            const currentHour = new Date().getHours();
             const timeImage = timeImages[currentHour];
             if (timeImage.includes('normal')) {
                 return 'normal';
@@ -125,6 +125,9 @@
         };
 
         const createArt = () => {
+            // Clear existing content
+            container.innerHTML = '';
+            
             const flower1Image = getRandomImage(images1);
             const flower2Image = getRandomImage(images2);
             const flower3Image = getRandomImage(images3);
@@ -135,17 +138,17 @@
 
             // Create an array with all the images we want to display
             const imagesToDisplay = [
-                { src: background, alt: 'Background', zIndex: 0, blendMode: 'normal' },
-                { src: garden, alt: 'Garden', zIndex: 2, blendMode: 'normal' },
-                { src: '02_flowers1/' + flower1Image, alt: 'Image 1', zIndex: 3, blendMode: 'normal' },
-                { src: '03_flowers2/' + flower2Image, alt: 'Image 2', zIndex: 4, blendMode: 'normal' },
-                { src: '04_flowers3/' + flower3Image, alt: 'Image 3', zIndex: 5, blendMode: 'normal' },
-                { src: '05_flowers4/' + flower4Image, alt: 'Image 4', zIndex: 6, blendMode: 'normal' },
-                { src: '06_flowers5/' + flower5Image, alt: 'Image 5', zIndex: 7, blendMode: 'normal' },
-                { src: '07_Time/' + timeImage, alt: 'Time', zIndex: 8, blendMode: getTimeBlendMode() },
-                { src: '08_Void/' + voidImage, alt: 'Void', zIndex: 9, blendMode: 'normal' },
-                { src: '09_Skull/skull.png', alt: 'Skull', zIndex: 10, blendMode: 'normal' },
-                { src: '10_Texture/texture.png', alt: 'Texture', zIndex: 11, blendMode: 'screen' },
+                { src: background, alt: 'Background', zIndex: 0, blendMode: 'normal', id: 'background'   },
+                { src: garden, alt: 'Garden', zIndex: 2, blendMode: 'normal', id: 'garden' },
+                { src: '02_flowers1/' + flower1Image, alt: 'Image 1', zIndex: 3, blendMode: 'normal', id: 'flower1' },
+                { src: '03_flowers2/' + flower2Image, alt: 'Image 2', zIndex: 4, blendMode: 'normal', id: 'flower2' },
+                { src: '04_flowers3/' + flower3Image, alt: 'Image 3', zIndex: 5, blendMode: 'normal', id: 'flower3' },
+                { src: '05_flowers4/' + flower4Image, alt: 'Image 4', zIndex: 6, blendMode: 'normal', id: 'flower4' },
+                { src: '06_flowers5/' + flower5Image, alt: 'Image 5', zIndex: 7, blendMode: 'normal', id: 'flower5' },
+                { src: '07_Time/' + timeImage, alt: 'Time', zIndex: 8, blendMode: getTimeBlendMode(), id: 'time' },
+                { src: '08_Void/' + voidImage, alt: 'Void', zIndex: 9, blendMode: 'normal', id: 'void' },
+                { src: '09_Skull/skull.png', alt: 'Skull', zIndex: 10, blendMode: 'normal', id: 'skull' },
+                { src: '10_Texture/texture.png', alt: 'Texture', zIndex: 11, blendMode: 'screen', id: 'texture' },
             ];
 
             let hasOG = false;
@@ -163,15 +166,9 @@
                 'Flower 2': flower2Image.split('.')[0].charAt(0).toUpperCase() + flower2Image.split('.')[0].slice(1),
                 'Flower 3': flower3Image.split('.')[0].charAt(0).toUpperCase() + flower3Image.split('.')[0].slice(1),
                 'Flower 4': flower4Image.split('.')[0].charAt(0).toUpperCase() + flower4Image.split('.')[0].slice(1),
-                'Flower 5': flower5Image.split('.')[0].charAt(0).toUpperCase() + flower5Image.split('.')[0].slice(1),
-                'Time': (() => {
-                    const hour = parseInt(timeImage.split('_')[0]);
-                    if (hour === 12) return '12pm';
-                    if (hour === 0 || hour === 24) return '12am';
-                    return (hour > 12 ? (hour - 12) + 'pm' : hour + 'am');
-                })(),
-                'Void': voidImage.split('-')[1].split('.')[0],
+                'Flower 5': flower5Image.split('.')[0].charAt(0).toUpperCase() + flower5Image.split('.')[0].slice(1)
             }
+
 
             if (hasOG && ogImage !== 'None.png') {
                 traits['OG'] = ogImage.split('.')[0];
@@ -186,6 +183,7 @@
                 imgElement.className = 'image-layer';
                 imgElement.style.zIndex = img.zIndex;
                 imgElement.style.mixBlendMode = img.blendMode;
+                imgElement.id = img.id;
                 
                 container.appendChild(imgElement);
             });
@@ -193,7 +191,14 @@
 
         createArt();
 
-        setInterval(createArt, 1000*60);
+        const refreshTime = () => {
+            const timeImage = getTimeImage();
+            const timeElement = document.getElementById('time');
+            timeElement.src = '07_Time/' + timeImage;
+            timeElement.style.mixBlendMode = getTimeBlendMode();
+        }
+
+        setInterval(refreshTime, 1000*60);
     </script>
 </body>
 </html>

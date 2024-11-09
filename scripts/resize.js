@@ -41,7 +41,7 @@ const resize = () => {
 
     try {
       const metadata = await sharp(inputPath).metadata();
-      const newWidth = Math.round(0.25 * metadata.width);
+      const newWidth = Math.round(0.9 * metadata.width);
 
       // Resize image to 25%
       await sharp(inputPath).resize({ width: newWidth }).toFile(outputPath);
